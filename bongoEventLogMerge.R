@@ -506,4 +506,4 @@ ggplotly(p2, tooltip = "text")
 
 # EN655 L6, AR34B L10, EN649 L6, EN644 L11 seem off but double checked on elog
 
-#write.csv(nes_tow_metadata, "output/nes-lter-zooplankton-tow-metadata-v2.csv")
+#write.csv(nes_tow_metadata, "output/nes-lter-zooplankton-event-log-v2.csv")
