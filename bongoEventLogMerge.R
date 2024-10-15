@@ -195,38 +195,58 @@ bongo_netdepth3 <- bongo_netdepth2 %>%
   mutate(
     # create initial secondary_flag based on conditions
     secondary_flag = case_when(
-      grepl("hit bottom", comments, ignore.case = TRUE) ~ "hit bottom",  # Prioritize "hit bottom"
-      is.na(depth_TDR) & !is.na(tow_depth_calc) ~ "Actual measurement of depth recorder (TDR) not available. Net max. depth was calculated based on wire information (cosine law)",
-      is.na(depth_TDR) & is.na(tow_depth_calc) & !is.na(depth_target) ~ "Target depth used for net max. depth due to unavailable TDR data and wire information",
-      instrument == "Ring Net" & is.na(max_wire_out_m) & !is.na(depth_target) ~ "Target depth used for net max. depth due to unavailable wire data for Ring Net",
+      grepl("hit bottom", comments, ignore.case = TRUE) ~ "hit bottom.", 
+      is.na(depth_TDR) & !is.na(tow_depth_calc) ~ "Depth recorder (TDR) data not available. Net max depth was calculated based on wire information (cosine law).",
+      is.na(depth_TDR) & is.na(tow_depth_calc) & !is.na(depth_target) ~ "Target depth used for net max depth due to unavailable TDR data and wire information.",
+      instrument == "Ring Net" & is.na(max_wire_out_m) & !is.na(depth_target) ~ "Target depth used for net max depth due to unavailable wire data for Ring Net.",
       TRUE ~ NA_character_  # default case if none of the conditions are met
-    ),
-    
-    # append additional comments based on other conditions 
-    secondary_flag = ifelse(
-      !is.na(secondary_flag),
-      paste(
-        secondary_flag,
-        na.omit(c(
-          ifelse(grepl("tons of small salps", comments, ignore.case = TRUE), "many salps in this cruise", NA),
-          ifelse(grepl("cod end broke", comments, ignore.case = TRUE), "cod end broke", NA),
-          ifelse(grepl("cod end was tangled", comments, ignore.case = TRUE), "tangled cod end", NA),
-          ifelse(grepl("non quantitative", comments, ignore.case = TRUE), "non quantitative", NA),
-          ifelse(grepl("forgot to get flow start", comments, ignore.case = TRUE), "flowmeter issue", NA),
-          ifelse(grepl("Flowmeter calibration", comments, ignore.case = TRUE), "no sample", NA),
-          ifelse(grepl("no 20um ring net sample", comments, ignore.case = TRUE), "no 20um ring net sample", NA),
-          ifelse(grepl("flowmeter reading is off", comments, ignore.case = TRUE), "flowmeter issue", NA),
-          ifelse(grepl("missing flowmeter numbers for 335um net", comments, ignore.case = TRUE), "flowmeter issue", NA)
-        )),
-        sep = ". "
-      ),
-      secondary_flag  # retain original if secondary_flag is NA
-    ),
-    
-    # set primary_flag based on secondary_flag
-    primary_flag = ifelse(!is.na(secondary_flag), 3, 1)  # primary_flag == 3 if secondary_flag is filled out, otherwise 1
+    )
   )
 
+bongo_netdepth3 <- bongo_netdepth3 %>%
+  mutate(
+    # append additional comments to secondary_flag 
+    secondary_flag = str_trim(
+      str_c(
+        coalesce(secondary_flag, ""),  # replace NA with an empty string
+        ifelse(grepl("tons of small salps", comments, ignore.case = TRUE), 
+               "many salps in this cruise.", ""),
+        ifelse(grepl("cod end broke.", comments, ignore.case = TRUE), 
+               "cod end broke.", ""),
+        ifelse(grepl("cod end was tangled", comments, ignore.case = TRUE), 
+               "tangled cod end.", ""),
+        #ifelse(grepl("non quantitative", comments, ignore.case = TRUE), 
+        #       "non quantitative.", ""),
+        ifelse(grepl("Non quantitative 150 micron sample", comments, ignore.case = TRUE), 
+               "non quantitative 150 micron sample.", ""), 
+        ifelse(grepl("150um sample probably non quantitative", comments, ignore.case = TRUE), 
+               "non quantitative 150 micron sample.", ""),
+        ifelse(grepl("Non quantitative 335", comments, ignore.case = TRUE), 
+               "non quantitative 335 micron sample.", ""), 
+        ifelse(grepl("Deployed and recovered without sample", comments, ignore.case = TRUE), 
+               "no sample.", ""), 
+        ifelse(grepl("forgot to get flow start", comments, ignore.case = TRUE), 
+               "flowmeter issue.", ""),
+        ifelse(grepl("Flowmeter calibration", comments, ignore.case = TRUE), 
+               "no sample.", ""),
+        ifelse(grepl("no 20um ring net sample", comments, ignore.case = TRUE), 
+               "no 20um ring net sample.", ""),
+        ifelse(grepl("flowmeter reading is off", comments, ignore.case = TRUE), 
+               "flowmeter issue.", ""),
+        ifelse(grepl("missing flowmeter numbers for 335um net", comments, ignore.case = TRUE), 
+               "flowmeter issue.", ""),
+        sep = " "
+      ) %>%
+        str_replace_all("\\bNA\\b", "") %>%  # remove standalone NAs
+        str_squish()  # remove any leading or trailing whitespace
+    )
+  )
+
+bongo_netdepth3 <- bongo_netdepth3 %>%
+  mutate(
+    primary_flag = ifelse(!is.na(secondary_flag) & secondary_flag != "", 3, 1),
+    secondary_flag = ifelse(secondary_flag == "", NA, secondary_flag)
+  )
 
 ## ------------------------------------------ ##
 #           Calculate vol filtered -----
