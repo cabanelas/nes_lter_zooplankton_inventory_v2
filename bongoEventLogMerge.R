@@ -268,11 +268,11 @@ bongo_netdepth3 <- bongo_netdepth3 %>%
 
 bongo_vol <- bongo_netdepth3 %>%
   mutate(vol_filtered_m3_335 = ((tot_flow_counts_335/10) * 0.26873 * 0.2922),
-         vol_filtered_m3_150 = ((tot_flow_counts_150/10) * 0.26873 * 0.2922),
-         haul_factor_10m2_335 = (net_max_depth_m*10)/vol_filtered_m3_335,
-         haul_factor_10m2_150 = (net_max_depth_m*10)/vol_filtered_m3_150,
-         haul_factor_100m3_335 = 100 / vol_filtered_m3_335,
-         haul_factor_100m3_150 = 100 / vol_filtered_m3_150)
+         vol_filtered_m3_150 = ((tot_flow_counts_150/10) * 0.26873 * 0.2922))
+         #haul_factor_10m2_335 = (net_max_depth_m*10)/vol_filtered_m3_335,
+         #haul_factor_10m2_150 = (net_max_depth_m*10)/vol_filtered_m3_150,
+         #haul_factor_100m3_335 = 100 / vol_filtered_m3_335,
+         #haul_factor_100m3_150 = 100 / vol_filtered_m3_150)
 #VOL_FILT_335_c = ((pi * (0.305)^2) * ((tot_flow_counts_335 * 26873)/999999)), #gives the same
 #VOL_FILT_150_c = ((pi * (0.305)^2) * ((tot_flow_counts_150 * 26873)/999999)))
 
