@@ -359,10 +359,6 @@ nes_tow_metadata <- bongo_vol %>%
     flowmeter_sn_150, flow_start_150, flow_end_150, tot_flow_counts_150, 
     vol_filtered_m3_150,
     morph_ID_150, DNA_150, size_fract_150, taxa_pick_150, size_fract_20,
-    haul_factor_10m2_335, 
-    haul_factor_10m2_150, 
-    haul_factor_100m3_335, 
-    haul_factor_100m3_150,
     primary_flag, secondary_flag, comments, 
   ) %>%
   rename(date_time_start_UTC = dateTime_start_UTC, 
