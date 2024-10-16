@@ -649,8 +649,9 @@ zp_towmetadata_fin <- towData_fin %>%
   )
 
 zp_towmetadata_fin <- towData_fin %>%
-  dplyr::select(cruise, station, cast, sample_name, date_time_start_UTC,
-                date_time_end_UTC, lat_start, lon_start, lat_end, lon_end,
+  dplyr::select(cruise, station, cast, sample_name, 
+                date_start_UTC, time_start_UTC, date_end_UTC, time_end_UTC,
+                lat_start, lon_start, lat_end, lon_end,
                 depth_bottom, depth_target, depth_TDR, net_max_depth_m, avg_angle,
                 max_wire_out_m, wire_rate_out_m_min, wire_rate_in_m_min, STW_start,
                 SOG_start, STW_end, SOG_end, flowmeter_sn_335, flow_start_335,
