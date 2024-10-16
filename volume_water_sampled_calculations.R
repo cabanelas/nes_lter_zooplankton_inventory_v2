@@ -639,6 +639,16 @@ for (cruise in uniq_cruises) {
 #    Select columns for final NES-LTER-TOW-Data -----
 ## ------------------------------------------ ##
 zp_towmetadata_fin <- towData_fin %>%
+  mutate(
+    date_start_UTC = as.Date(date_time_start_UTC),  # Extract the date
+    time_start_UTC = format(as.POSIXct(date_time_start_UTC), format="%H:%M:%S"),  # Extract the time
+    date_end_UTC = as.Date(date_time_end_UTC),  # Extract the date
+    time_end_UTC = format(as.POSIXct(date_time_end_UTC), format="%H:%M:%S"),  # Extract the time
+    date_time_start_UTC = NULL,  # Remove original combined column if no longer needed
+    date_time_end_UTC = NULL     # Remove original combined column if no longer needed
+  )
+
+zp_towmetadata_fin <- towData_fin %>%
   dplyr::select(cruise, station, cast, sample_name, date_time_start_UTC,
                 date_time_end_UTC, lat_start, lon_start, lat_end, lon_end,
                 depth_bottom, depth_target, depth_TDR, net_max_depth_m, avg_angle,
@@ -647,7 +657,7 @@ zp_towmetadata_fin <- towData_fin %>%
                 flow_end_335, tot_flow_counts_335, vol_filtered_m3_335, 
                 NOAA_335, DNA_335, flowmeter_sn_150, flow_start_150,
                 flow_end_150, tot_flow_counts_150, vol_filtered_m3_150,
-                morph_ID_150, DNA_150, taxa_pick_150, size_fract_20, 
+                morph_ID_150, DNA_150, size_fract_150, taxa_pick_150, size_fract_20, 
                 haul_factor_10m2_335, haul_factor_10m2_150,
                 haul_factor_100m3_335, haul_factor_100m3_150,
                 comments, primary_flag, secondary_flag)
