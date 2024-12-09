@@ -1,4 +1,3 @@
-# nes_lter_zooplankton_inventory_v2
 # NES-LTER Zooplankton Inventory Data Package Scripts
 This repository contains R scripts for creating the NES-LTER zooplankton sample inventory data package submitted to the Environmental Data Initiative (EDI) repository. The data package provides an inventory of zooplankton samples collected during Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises, ongoing since 2017.
 
