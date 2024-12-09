@@ -63,3 +63,9 @@ Install the required packages using:
 install.packages(c("here", "readr", "dplyr", "lubridate", "tidyverse", 
                    "ggplot2", "maps", "sf", "plotly", "listviewer", 
                    "tidyr", "RColorBrewer", "ggthemes", "ggpubr", "cowplot"))
+```
+
+## Citation
+
+Please cite the data package as:
+Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER). (202X). Zooplankton sample inventory for Northeast U.S. Shelf Long Term Ecological Research (NES-LTER) Transect cruises, ongoing since 2017. v2. Environmental Data Initiative.
